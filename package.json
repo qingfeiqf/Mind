@@ -1,0 +1,21 @@
+{
+  "name": "mind",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Mind - 去中心化创想价值网络",
+  "scripts": {
+    "dev:desktop": "pnpm --filter @mind/desktop dev",
+    "build:desktop": "pnpm --filter @mind/desktop build",
+    "dev:web": "pnpm --filter @mind/web dev",
+    "test": "pnpm -r test",
+    "lint": "pnpm -r lint",
+    "typecheck": "pnpm -r typecheck",
+    "contracts:compile": "pnpm --filter @mind/contracts compile",
+    "contracts:test": "pnpm --filter @mind/contracts test",
+    "contracts:deploy": "pnpm --filter @mind/contracts deploy"
+  },
+  "engines": {
+    "node": ">=20",
+    "pnpm": ">=9"
+  }
+}
