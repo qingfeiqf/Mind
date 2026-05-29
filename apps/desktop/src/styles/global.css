@@ -110,3 +110,70 @@ body,
 ::selection {
   background: oklch(72% 0.18 195 / 0.3);
 }
+
+/* BlockSuite Integration */
+.blocksuite-container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.blocksuite-container > *:first-child {
+  width: 100%;
+  height: 100%;
+}
+
+.blocksuite-toolbar-overlay {
+  position: absolute;
+  top: var(--space-3, 0.75rem);
+  right: var(--space-3, 0.75rem);
+  display: flex;
+  gap: var(--space-2, 0.5rem);
+  z-index: 1000;
+}
+
+.blocksuite-toolbar-overlay button {
+  padding: var(--space-1, 0.25rem) var(--space-3, 0.75rem);
+  border: 1px solid var(--color-node-border, oklch(30% 0.02 260));
+  border-radius: var(--radius-sm, 6px);
+  background: var(--color-bg-elevated, oklch(22% 0.02 260));
+  color: var(--color-text-primary, oklch(95% 0.01 260));
+  font-family: var(--font-sans, "Inter", sans-serif);
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: background var(--duration-fast, 150ms) var(--ease-out-expo, cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+.blocksuite-toolbar-overlay button:hover:not(:disabled) {
+  background: var(--color-bg-overlay, oklch(26% 0.02 260));
+}
+
+.blocksuite-toolbar-overlay button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.mode-toggle-btn {
+  font-weight: 600;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 240px;
+  background: var(--color-bg-surface, oklch(18% 0.02 260));
+  border-right: 1px solid var(--color-node-border, oklch(30% 0.02 260));
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+}
+
+.sidebar-header {
+  padding: var(--space-4, 1rem);
+  border-bottom: 1px solid var(--color-node-border, oklch(30% 0.02 260));
+}
+
+.sidebar-header h2 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-accent, oklch(72% 0.18 195));
+}
