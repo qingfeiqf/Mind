@@ -1,7 +1,13 @@
 import { useEffect, useRef, useState, useCallback } from "react";
-import { createEmptyDoc, EdgelessEditor, PageEditor } from "@blocksuite/presets";
+import {
+  AffineEditorContainer,
+  createEmptyDoc,
+} from "@blocksuite/presets";
+import { effects } from "@blocksuite/presets/effects";
 
 export type EditorMode = "edgeless" | "page";
+
+let effectsCalled = false;
 
 interface UseBlockSuiteReturn {
   containerRef: React.RefObject<HTMLDivElement | null>;
@@ -15,29 +21,39 @@ interface UseBlockSuiteReturn {
 
 export function useBlockSuite(): UseBlockSuiteReturn {
   const containerRef = useRef<HTMLDivElement | null>(null);
-  const editorRef = useRef<EdgelessEditor | PageEditor | null>(null);
+  const editorRef = useRef<AffineEditorContainer | null>(null);
   const docRef = useRef<ReturnType<ReturnType<typeof createEmptyDoc>["init"]> | null>(null);
 
   const [mode, setModeState] = useState<EditorMode>("edgeless");
+  const [ready, setReady] = useState(false);
   const [canUndo, setCanUndo] = useState(false);
   const [canRedo, setCanRedo] = useState(false);
+
+  // Register BlockSuite custom elements once
+  useEffect(() => {
+    if (!effectsCalled) {
+      effects();
+      effectsCalled = true;
+    }
+  }, []);
 
   // Initialize doc once
   useEffect(() => {
     const { doc, init } = createEmptyDoc();
     init();
     docRef.current = doc;
+    setReady(true);
 
     return () => {
       docRef.current = null;
     };
   }, []);
 
-  // Mount/swap editor when mode changes or container becomes available
+  // Mount AffineEditorContainer when ready
   useEffect(() => {
     const container = containerRef.current;
     const doc = docRef.current;
-    if (!container || !doc) return;
+    if (!container || !doc || !ready) return;
 
     // Remove previous editor
     if (editorRef.current) {
@@ -45,10 +61,10 @@ export function useBlockSuite(): UseBlockSuiteReturn {
       editorRef.current = null;
     }
 
-    // Create new editor based on mode
-    const editor =
-      mode === "edgeless" ? new EdgelessEditor() : new PageEditor();
+    // Use AffineEditorContainer for proper mode switching
+    const editor = new AffineEditorContainer();
     editor.doc = doc;
+    editor.mode = mode;
     container.appendChild(editor);
     editorRef.current = editor;
 
@@ -56,7 +72,15 @@ export function useBlockSuite(): UseBlockSuiteReturn {
       editor.remove();
       editorRef.current = null;
     };
-  }, [mode, docRef.current]);
+  }, [ready]);
+
+  // Handle mode switching
+  useEffect(() => {
+    const editor = editorRef.current;
+    if (editor) {
+      editor.switchEditor(mode);
+    }
+  }, [mode]);
 
   // Poll undo/redo state
   useEffect(() => {
