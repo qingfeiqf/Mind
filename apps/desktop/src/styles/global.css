@@ -56,16 +56,14 @@
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
+/* Reset - only html/body, NOT BlockSuite elements */
+html, body {
   margin: 0;
   padding: 0;
+  height: 100%;
+  overflow: hidden;
 }
 
-html,
-body,
 #root {
   height: 100%;
   overflow: hidden;
@@ -74,6 +72,7 @@ body,
   color: var(--color-text-primary);
 }
 
+/* App Layout */
 .app-root {
   display: flex;
   height: 100vh;
@@ -85,30 +84,6 @@ body,
   flex: 1;
   position: relative;
   overflow: hidden;
-}
-
-/* 滚动条 */
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-}
-
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--color-text-tertiary);
-  border-radius: 3px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--color-text-secondary);
-}
-
-/* 选择框 */
-::selection {
-  background: oklch(72% 0.18 195 / 0.3);
 }
 
 /* BlockSuite Integration */
@@ -123,6 +98,7 @@ body,
   height: 100%;
 }
 
+/* React toolbar overlay */
 .blocksuite-toolbar-overlay {
   position: absolute;
   top: var(--space-3, 0.75rem);
@@ -141,7 +117,6 @@ body,
   font-family: var(--font-sans, "Inter", sans-serif);
   font-size: 0.75rem;
   cursor: pointer;
-  transition: background var(--duration-fast, 150ms) var(--ease-out-expo, cubic-bezier(0.16, 1, 0.3, 1));
 }
 
 .blocksuite-toolbar-overlay button:hover:not(:disabled) {
@@ -176,4 +151,27 @@ body,
   font-size: 1rem;
   font-weight: 600;
   color: var(--color-accent, oklch(72% 0.18 195));
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-text-tertiary);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-text-secondary);
+}
+
+::selection {
+  background: oklch(72% 0.18 195 / 0.3);
 }
